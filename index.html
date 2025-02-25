@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhythm Writer</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Voeg VexFlow toe via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/build/cjs/vexflow.min.js"></script>
 </head>
 <body>
-    <div id="app">
-        <h1>Rhythm Writer</h1>
-        <div id="toolbar">
-            <button id="quarter-note">♩</button>
-            <button id="eighth-note">♪</button>
-            <button id="sixteenth-note">♫</button>
-            <!-- Voeg meer knoppen toe voor andere ritmes -->
-        </div>
-        <div id="notation-area"></div>
+    <div id="toolbar">
+        <button id="whole-note">Whole Note</button>
+        <button id="half-note">Half Note</button>
+        <button id="quarter-note">Quarter Note</button>
     </div>
 
+    <div id="staff"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@4.0.0/build/cdn.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
