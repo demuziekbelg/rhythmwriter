@@ -1,47 +1,41 @@
-// Wacht totdat de pagina geladen is
-window.onload = function() {
+// Wacht totdat de pagina volledig geladen is
+window.onload = function () {
     const VF = Vex.Flow;
-    const div = document.getElementById("notation-area");
 
-    // Creëer een nieuw VexFlow-scherm
+    // Maak een nieuwe VexFlow renderer
+    const div = document.getElementById("staff");
     const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-    renderer.resize(window.innerWidth - 40, 200); // Zorg ervoor dat het zich aanpast aan de schermgrootte
     const context = renderer.getContext();
 
-    // Maak een nieuwe notenbalk aan
-    const stave = new VF.Stave(10, 40, 400);
-    stave.addClef("percussion").setContext(context).draw();
+    // Stel de grootte van het canvas in
+    renderer.resize(500, 150);
+    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
-    // Ritmesymbolen
-    const quarterNote = new VF.Tickable.Note({ keys: ["c/4"], duration: "4" });
-    const eighthNote = new VF.Tickable.Note({ keys: ["c/4"], duration: "8" });
-    const sixteenthNote = new VF.Tickable.Note({ keys: ["c/4"], duration: "16" });
+    // Maak de staf
+    const stave = new VF.Stave(10, 40, 400); // Positie (10,40) en breedte 400px
+    stave.addClef("treble").addTimeSignature("4/4");
+    stave.setContext(context).draw(); // Teken de staf
 
-    // Functie om noten toe te voegen
-    function drawNotes(note) {
-        const notes = [note]; // Voeg de geselecteerde noot toe aan een array
+    // Voeg een functie toe om noten toe te voegen aan de staf
+    function addNote(duration) {
+        const note = new VF.StaveNote({ keys: ["c/4"], duration: duration });
         const voice = new VF.Voice({ num_beats: 4, beat_value: 4 });
-        voice.addTickables(notes);
-        new VF.Formatter().joinVoices([voice]).format([voice], 300);
+        voice.addTickables([note]);
+
+        const formatter = new VF.Formatter().joinVoices([voice]).format([voice], 300);
         voice.draw(context, stave);
     }
 
-    // Event listeners voor knoppen
-    document.getElementById("quarter-note").addEventListener("click", () => {
-        drawNotes(quarterNote);
-    });
-    document.getElementById("eighth-note").addEventListener("click", () => {
-        drawNotes(eighthNote);
-    });
-    document.getElementById("sixteenth-note").addEventListener("click", () => {
-        drawNotes(sixteenthNote);
+    // Voeg event listeners toe voor de knoppen in de toolbar
+    document.getElementById("whole-note").addEventListener("click", function () {
+        addNote("w"); // Hele noot
     });
 
-    // Zorg ervoor dat de weergave zich aanpast bij het veranderen van de schermgrootte
-    window.addEventListener("resize", function() {
-        renderer.resize(window.innerWidth - 40, 200);
-        context.clear();
-        stave.setWidth(window.innerWidth - 40).draw();
-        drawNotes(quarterNote);  // Herteken de laatste noot na resizing
+    document.getElementById("half-note").addEventListener("click", function () {
+        addNote("h"); // Halve noot
+    });
+
+    document.getElementById("quarter-note").addEventListener("click", function () {
+        addNote("q"); // Kwart noot
     });
 };
